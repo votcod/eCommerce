@@ -10,7 +10,7 @@ namespace eCommerce.Models
     {
         public DataContext(DbContextOptions<DataContext> options) : base(options)
         {
-
+            Database.EnsureCreated();
         }
         public DbSet<Product> Products { get; set; }
     }
