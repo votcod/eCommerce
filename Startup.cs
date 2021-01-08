@@ -23,6 +23,7 @@ namespace eCommerce
         {
             string connection = Configuration["Data:ConnectionStrings:DefaultConnection"];
             services.AddDbContext<DataContext>(r => r.UseSqlServer(connection));
+            services.AddTransient<IProductRepository, ProductRepository>();
             services.AddMvc();
         }
 
@@ -42,7 +43,7 @@ namespace eCommerce
             {
                 endpoints.MapControllerRoute(
                     name: "default", 
-                    pattern: "{controller=Home}/{action=Index}/{id?}"
+                    pattern: "{controller=Product}/{action=List}/{id?}"
                     );
             });
         }
