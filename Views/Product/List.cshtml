@@ -11,23 +11,7 @@
         @foreach (var p in Model)
         {
 
-            <div class="card" style="width: 18rem;">
-                @if (p.Picture != null)
-                {
-                    <img class="card-img" src="data:image/jpeg;base64,@(Convert.ToBase64String(p.Picture))" />
-                }
-                else
-                {
-                    <img class="card-img-top" src="https://i.pinimg.com/736x/7c/1c/a4/7c1ca448be31c489fb66214ea3ae6deb.jpg" />
-                }
-                <div class="card-body">
-                    <h5 class="card-title">@p.Name</h5>
-                    <p class="card-subtitle">@p.Category</p>
-                    <p class="card-text">@p.Description</p>
-                    <p class="card-footer"> @p.Price.ToString("C1")</p>
-                    <a asp-action="List" class="btn btn-primary">Show more -></a>
-                </div>
-            </div>
+            @await Html.PartialAsync("_CardPartialView", p);
         }
     </div>
 </div>
