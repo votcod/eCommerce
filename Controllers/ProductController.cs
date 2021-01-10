@@ -22,5 +22,18 @@ namespace eCommerce.Controllers
             }
             return RedirectToAction(nameof(List));
         }
+        public IActionResult Find(string partOfName)
+        {
+            if (partOfName == null) return RedirectToAction(nameof(List));
+            
+            List<Product> products = productRepository
+                .GetAllProducts()
+                .Where(r => r.Name.Contains(partOfName) || 
+                r.Name.ToLower().Contains(partOfName))
+                .ToList();
+            if (products != null) return View(nameof(List), products);
+
+            return RedirectToAction(nameof(List));
+        }
     }
 }
