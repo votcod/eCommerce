@@ -1,33 +1,39 @@
 ﻿@model IEnumerable<Product>
 <style>
-    .card {
+    .column {
         flex: 0 1 33%;
-        margin: 20px 10px;
+        margin: 12px 0px;
+        padding: 0 12px;
     }
 </style>
-
-<div class="container">
-    <div class="card-deck">
-        @foreach (var p in Model)
-        {
-
-            <div class="card" style="width: 18rem;">
-                @if (p.Picture != null)
+<div class="d-flex">
+    <div class="sidebar w-25">There will be something here soon</div>
+    <div class="content w-75">
+        <div class="container">
+            <div class="d-flex flex-wrap">
+                @foreach (var p in Model)
                 {
-                    <img class="card-img" src="data:image/jpeg;base64,@(Convert.ToBase64String(p.Picture))" />
+                    <div class="column d-flex">
+                        <div class="card d-flex flex-column">
+                            @if (p.Picture != null)
+                            {
+                                <img class="card-img-top" style="height: 300px;" src="data:image/jpeg;base64,@(Convert.ToBase64String(p.Picture))" />
+                            }
+                            else
+                            {
+                                <img class="card-img-top" style="height: 300px;" src="https://i.pinimg.com/736x/7c/1c/a4/7c1ca448be31c489fb66214ea3ae6deb.jpg" />
+                            }
+                            <div class="card-body">
+                                <h5 class="card-title">@p.Name</h5>
+                                <p class="card-subtitle">@p.Category</p>
+                                <p class="card-text" style="flex: 1 1 auto;">@p.Description</p>
+                                <p class="card-footer"> @p.Price.ToString("C1")</p>
+                                <a asp-action="Info" asp-route-productId="@p.ProductId" class="btn btn-primary">Show details -></a>
+                            </div>
+                        </div>
+                    </div>
                 }
-                else
-                {
-                    <img class="card-img-top" src="https://i.pinimg.com/736x/7c/1c/a4/7c1ca448be31c489fb66214ea3ae6deb.jpg" />
-                }
-                <div class="card-body">
-                    <h5 class="card-title">@p.Name</h5>
-                    <p class="card-subtitle">@p.Category</p>
-                    <p class="card-text">@p.Description</p>
-                    <p class="card-footer"> @p.Price.ToString("C1")</p>
-                    <a asp-action="List" class="btn btn-primary">Show more -></a>
-                </div>
             </div>
-        }
+        </div>
     </div>
 </div>

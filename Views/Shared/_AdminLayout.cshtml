@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="/lib/twitter-bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <title>@ViewBag.Title - eCommerce(Admin)</title>
+</head>
+<body>
+    <div class="bg-success text-center p-1 text-white"><h1>eCommerce</h1></div>
+    <div class="position-relative text-center text-info p-1 bg-light">
+        @if (TempData["Message"] != null)
+        {
+            <span style="transform: translate3d(-50%,0,0);" class="alert alert-success text-center m-0 position-absolute">@TempData["Message"]</span>
+        }
+        <h2>Admin panel</h2>
+    </div>
+    <div>
+        @RenderBody()
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.alert').delay(3000).fadeOut(500);
+        });
+    </script>
+</body>
+</html>
