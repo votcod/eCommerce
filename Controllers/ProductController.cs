@@ -35,5 +35,21 @@ namespace eCommerce.Controllers
 
             return RedirectToAction(nameof(List));
         }
+        public IActionResult Sort(SortState sortState = SortState.NameAscending)
+        {
+            ViewData["SortByName"] = sortState == SortState.NameAscending ? SortState.NameDescending : SortState.NameAscending;
+            ViewData["SortByPrice"] = sortState == SortState.PriceAscending ? SortState.PriceDescending : SortState.PriceAscending;
+
+            if (sortState == SortState.NameAscending) 
+                return View(nameof(List), productRepository.GetAllProducts().OrderBy(r => r.Name));            
+            else if (sortState == SortState.NameDescending) 
+                return View(nameof(List), productRepository.GetAllProducts().OrderByDescending(r => r.Name));
+            else if (sortState == SortState.PriceAscending) 
+                return View(nameof(List), productRepository.GetAllProducts().OrderBy(r => r.Price));
+            else if (sortState == SortState.PriceDescending) 
+                return View(nameof(List), productRepository.GetAllProducts().OrderByDescending(r => r.Price));
+
+            return RedirectToAction(nameof(List));
+        }
     }
 }
