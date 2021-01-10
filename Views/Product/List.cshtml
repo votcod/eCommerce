@@ -7,8 +7,26 @@
     }
 </style>
 <div class="d-flex">
-    <div class="sidebar w-25">There will be something here soon</div>
+    <div class="sidebar w-25">
+        <div class="container">
+            <div class="m-1">
+                <form asp-action="Find" method="get">
+                    <div class="d-flex">
+                        <input class="form-control m-1" placeholder="Type name of product.." type="text" name="partOfName" value="" />
+                        <button class="btn btn-primary m-1">Find</button>
+                    </div>
+                </form>
+            </div>            
+        </div>        
+    </div>
     <div class="content w-75">
+        @if(Model.Count() == 0)
+        {
+        <div class="text-center font-weight-bold">
+            <p>There`re no products ;(</p>
+        </div>
+            
+        }
         <div class="container">
             <div class="d-flex flex-wrap">
                 @foreach (var p in Model)
