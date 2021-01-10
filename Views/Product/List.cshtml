@@ -16,7 +16,12 @@
                         <button class="btn btn-primary m-1">Find</button>
                     </div>
                 </form>
-            </div>            
+            </div> 
+            <div class="m-1">
+                <h3>Sort by:</h3>
+                <a asp-action="Sort" asp-route-sortState="@ViewBag.SortByName" class="btn btn-outline-info">Name</a>
+                <a asp-action="Sort" asp-route-sortState="@ViewBag.SortByPrice" class="btn btn-outline-info">Price</a>
+            </div>
         </div>        
     </div>
     <div class="content w-75">
