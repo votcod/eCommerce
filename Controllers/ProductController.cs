@@ -13,5 +13,14 @@ namespace eCommerce.Controllers
         public ProductController(IProductRepository ProductRepository) 
             => productRepository = ProductRepository;
         public ViewResult List() => View(productRepository.GetAllProducts());
+        public IActionResult Info(long productId)
+        {
+            Product product = productRepository.FindProductById(productId);
+            if (product != null)
+            {
+                return View(product);
+            }
+            return RedirectToAction(nameof(List));
+        }
     }
 }
