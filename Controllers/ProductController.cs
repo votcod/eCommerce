@@ -10,8 +10,14 @@ namespace eCommerce.Controllers
     public class ProductController : Controller
     {
         private readonly IProductRepository productRepository;
-        public ProductController(IProductRepository ProductRepository) 
-            => productRepository = ProductRepository;
+        private readonly ICategoryRepository categoryRepository;
+        public ProductController(IProductRepository ProductRepository, ICategoryRepository CategoryRepository)
+        {
+            productRepository = ProductRepository;
+            categoryRepository = CategoryRepository;
+
+        }
+           
         public ViewResult List() => View(productRepository.GetAllProducts());
         public IActionResult Info(long productId)
         {

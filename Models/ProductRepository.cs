@@ -1,4 +1,5 @@
 ﻿using eCommerce.Models.ViewModels;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -19,7 +20,7 @@ namespace eCommerce.Models
                 Name = product.Name,
                 Price = product.Price,
                 Description = product.Description,
-                Category = product.Category
+                CategoryId = product.CategoryId
             };
             if (product.Picture != null)
             {
@@ -52,7 +53,7 @@ namespace eCommerce.Models
                 prod.Name = product.Name;
                 prod.Price = product.Price;
                 prod.Description = product.Description;
-                prod.Category = product.Category;
+                prod.CategoryId = product.CategoryId;               
             }
             
             if (product.Picture != null)
@@ -73,6 +74,6 @@ namespace eCommerce.Models
             => context.Products.FirstOrDefault(r => r.ProductId == id);        
     
 
-        public IEnumerable<Product> GetAllProducts() => context.Products.ToArray();        
+        public IEnumerable<Product> GetAllProducts() => context.Products.Include(r => r.Category).ToArray();        
     }
 }
