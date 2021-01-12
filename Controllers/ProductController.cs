@@ -28,8 +28,10 @@ namespace eCommerce.Controllers
             
             List<Product> products = productRepository
                 .GetAllProducts()
-                .Where(r => r.Name.Contains(partOfName) || 
-                r.Name.ToLower().Contains(partOfName))
+                .Where(r => 
+                r.Name.Contains(partOfName) || 
+                r.Name.ToLower().Contains(partOfName) || 
+                r.Name.ToUpper().Contains(partOfName))
                 .ToList();
             if (products != null) return View(nameof(List), products);
 
