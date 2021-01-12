@@ -1,0 +1,29 @@
+﻿@model Category
+
+@{
+    Layout = "_AdminLayout";
+}
+
+<div style="margin: 0 auto;" class="container-md">
+    <form asp-action="@(Model == null ? "Create" : "Edit")" method="post">
+        <input type="hidden" asp-for="CategoryId" />
+        <div class="form-group">
+            <label asp-for="Name" class="form-check-label"></label>
+            <input asp-for="Name" class="form-control" />
+        </div>      
+        <div class="form-group">
+            <label asp-for="Description" class="form-check-label"></label>
+            <input asp-for="Description" class="form-control" />
+        </div>        
+        <div class="text-center">
+            @if (Model == null)
+            {
+                <button class="btn btn-outline-success" type="submit">Add Category</button>
+            }
+            else
+            {
+               <button class="btn btn-outline-success" type="submit">Save Category</button>
+            }
+        </div>
+    </form>
+</div>

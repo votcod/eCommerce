@@ -48,7 +48,7 @@
                             }
                             <div class="card-body">
                                 <h5 class="card-title">@p.Name</h5>
-                                <p class="card-subtitle">@p.Category</p>
+                                <p class="card-subtitle">@p.Category.Name</p>
                                 <p class="card-text" style="flex: 1 1 auto;">@p.Description</p>
                                 <p class="card-footer"> @p.Price.ToString("C1")</p>
                                 <a asp-action="Info" asp-route-productId="@p.ProductId" class="btn btn-primary">Show details -></a>
