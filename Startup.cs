@@ -44,7 +44,7 @@ namespace eCommerce
             {
                 endpoints.MapControllerRoute(
                     name: "default", 
-                    pattern: "{controller=Admin}/{action=List}/{id?}"
+                    pattern: "{controller=Product}/{action=List}/{id?}"
                     );
             });
         }
