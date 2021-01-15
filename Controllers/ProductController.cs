@@ -1,4 +1,5 @@
 ﻿using eCommerce.Models;
+using eCommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,23 @@ namespace eCommerce.Controllers
 
         }
            
-        public ViewResult List() => View(productRepository.GetAllProducts());
+        public ViewResult List(int page = 1)
+        {
+            int pageSize = 3;
+
+            IEnumerable<Product> source = productRepository.GetAllProducts();
+
+            var count = source.Count();
+            var items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+            ProductListViewModel viewModel = new ProductListViewModel
+            {
+                PageViewModel = pageViewModel,
+                Products = items                
+            };
+            return View(viewModel);
+        }
         public IActionResult Info(long productId)
         {
             Product product = productRepository.FindProductById(productId);

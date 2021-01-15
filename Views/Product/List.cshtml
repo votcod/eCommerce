@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Product>
+﻿@model ProductListViewModel
 <style>
     .column {
         flex: 0 1 33%;
@@ -16,25 +16,25 @@
                         <button class="btn btn-primary m-1">Find</button>
                     </div>
                 </form>
-            </div> 
+            </div>
             <div class="m-1">
                 <h3>Sort by:</h3>
                 <a asp-action="Sort" asp-route-sortState="@ViewBag.SortByName" class="btn btn-outline-info">Name</a>
                 <a asp-action="Sort" asp-route-sortState="@ViewBag.SortByPrice" class="btn btn-outline-info">Price</a>
             </div>
-        </div>        
+        </div>
     </div>
     <div class="content w-75">
-        @if(Model.Count() == 0)
+        @if (Model.Products.Count() == 0)
         {
-        <div class="text-center font-weight-bold">
-            <p>There`re no products ;(</p>
-        </div>
-            
+            <div class="text-center font-weight-bold">
+                <p>There`re no products ;(</p>
+            </div>
+
         }
         <div class="container">
             <div class="d-flex flex-wrap">
-                @foreach (var p in Model)
+                @foreach (var p in Model.Products)
                 {
                     <div class="column d-flex">
                         <div class="card d-flex flex-column">
@@ -55,6 +55,27 @@
                             </div>
                         </div>
                     </div>
+                }
+            </div>
+            <div class="text-center">
+                @if (Model.PageViewModel.HasPreviousPage)
+                {
+
+                    <a asp-action="List"
+                       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+                       class="btn btn-outline-dark">
+                        Previous
+                    </a>
+
+                }
+                @if (Model.PageViewModel.HasNextPage)
+                {
+
+                    <a asp-action="List"
+                       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+                       class="btn btn-outline-dark">
+                        Next
+                    </a>
                 }
             </div>
         </div>
