@@ -27,7 +27,7 @@ namespace eCommerce.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(ProductViewModel product)
+        public IActionResult Create(ProductEditViewModel product)
         {
             ViewBag.Categories = categoryRepository.GetCategories();
             if (ModelState.IsValid)
@@ -59,7 +59,7 @@ namespace eCommerce.Controllers
             return RedirectToAction(nameof(List));
         }
         [HttpPost]
-        public IActionResult Edit(ProductViewModel product)
+        public IActionResult Edit(ProductEditViewModel product)
         {
             if (ModelState.IsValid)
             {

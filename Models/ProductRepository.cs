@@ -13,7 +13,7 @@ namespace eCommerce.Models
         private readonly DataContext context;
         public ProductRepository(DataContext dataContext) => context = dataContext;
 
-        public Product CreateProduct(ProductViewModel product)
+        public Product CreateProduct(ProductEditViewModel product)
         {
             Product prod = new Product
             {
@@ -45,7 +45,7 @@ namespace eCommerce.Models
             return prod;
         }
 
-        public Product EditProduct(ProductViewModel product)
+        public Product EditProduct(ProductEditViewModel product)
         {
             Product prod = FindProductById(product.ProductId);
             if (prod != null)
