@@ -38,7 +38,7 @@ namespace eCommerce.Controllers
 
             if (!memoryCache.TryGetValue("key_currency", out CurrencyConverter modelConvertor))
             {
-                throw new Exception("Ошибка получения данных");
+                throw new Exception("Data retrieval error");
             }
 
             ProductListViewModel viewModel = new ProductListViewModel
