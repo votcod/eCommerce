@@ -1,0 +1,7 @@
+﻿@model CurrencyConverter
+
+<div>
+    <div>Current date: @DateTime.Today.ToShortDateString()</div>
+    <div>1 USD = @Decimal.Round(Model.USD, 2) UAH</div>
+    <div>1 EUR = @Decimal.Round(Model.EUR, 2) UAH</div>
+</div>
