@@ -1,6 +1,7 @@
 ﻿using eCommerce.Models;
 using eCommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Caching.Memory;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,15 @@ namespace eCommerce.Controllers
     {
         private readonly IProductRepository productRepository;
         private readonly ICategoryRepository categoryRepository;
-        public ProductController(IProductRepository ProductRepository, ICategoryRepository CategoryRepository)
+        private readonly IMemoryCache memoryCache;
+        public ProductController(
+            IProductRepository ProductRepository, 
+            ICategoryRepository CategoryRepository, 
+            IMemoryCache memoryCache)
         {
             productRepository = ProductRepository;
             categoryRepository = CategoryRepository;
+            this.memoryCache = memoryCache;
 
         }
            
@@ -29,10 +35,17 @@ namespace eCommerce.Controllers
             var items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
 
             PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
+
+            if (!memoryCache.TryGetValue("key_currency", out CurrencyConverter modelConvertor))
+            {
+                throw new Exception("Ошибка получения данных");
+            }
+
             ProductListViewModel viewModel = new ProductListViewModel
             {
                 PageViewModel = pageViewModel,
-                Products = items                
+                Products = items,
+                CurrencyConverter = modelConvertor
             };
             return View(viewModel);
         }

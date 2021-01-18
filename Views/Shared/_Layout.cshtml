@@ -7,10 +7,20 @@
     <title>@ViewBag.Title - eCommerce</title>
 </head>
 <body>
-    <div class="bg-success text-center p-1 text-white"><h1>eCommerce</h1></div>          
-        <div>
-            @RenderBody()
+    <div class="bg-success text-center p-1 text-white">
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="head-logo">
+                    <h1>eCommerce</h1>
+                </div>
+                <div class="head-body">
+                    <a asp-controller="Admin" asp-action="List" class="btn btn-sm btn-primary">Admin panel</a>
+                </div>
+            </div>
         </div>
-        
+    </div>
+    <div>
+        @RenderBody()
+    </div>
 </body>
 </html>

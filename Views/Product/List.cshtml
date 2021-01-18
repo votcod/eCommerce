@@ -46,13 +46,15 @@
                             {
                                 <img class="card-img-top" style="height: 300px;" src="https://i.pinimg.com/736x/7c/1c/a4/7c1ca448be31c489fb66214ea3ae6deb.jpg" />
                             }
-                            <div class="card-body">
-                                <h5 class="card-title">@p.Name</h5>
-                                <p class="card-subtitle">@p.Category.Name</p>
-                                <p class="card-text" style="flex: 1 1 auto;">@p.Description</p>
-                                <p class="card-footer"> @p.Price.ToString("C1")</p>
-                                <a asp-action="Info" asp-route-productId="@p.ProductId" class="btn btn-primary">Show details -></a>
-                            </div>
+                        <div class="card-body">
+                            <h5 class="card-title">@p.Name</h5>
+                            <p class="card-subtitle">@p.Category.Name</p>
+                            <p class="card-text" style="flex: 1 1 auto;">@p.Description</p>
+                            <p class="card-footer">Price in UAH: ₴@p.Price <br />
+                            Price in USD: @Decimal.Round(Model.CurrencyConverter.ConvertToUSD(p.Price), 2).ToString("C")</p>
+                           
+                            <a asp-action="Info" asp-route-productId="@p.ProductId" class="btn btn-primary">Show details -></a>
+                        </div>
                         </div>
                     </div>
                 }
