@@ -9,5 +9,6 @@ namespace eCommerce.Models.ViewModels
     {  
         public IEnumerable<Product> Products { get; set; }
         public PageViewModel PageViewModel { get; set; }
+        public CurrencyConverter CurrencyConverter { get; set; }
     }
 }
