@@ -25,11 +25,18 @@ namespace eCommerce.Controllers
 
         }
            
-        public ViewResult List(int page = 1)
+        public ViewResult List(string category, int page = 1)
         {
             int pageSize = 3;
+            
 
-            IEnumerable<Product> source = productRepository.GetAllProducts();
+            ViewBag.SelectedCategory = category;
+
+
+            IEnumerable<Product> source = productRepository.GetAllProducts().Where(p => category == null
+            || p.Category.Name == category);            
+           
+                      
 
             var count = source.Count();
             var items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
