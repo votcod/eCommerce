@@ -22,18 +22,18 @@ namespace eCommerce.Controllers
             productRepository = ProductRepository;
             categoryRepository = CategoryRepository;
             this.memoryCache = memoryCache;
-
         }
            
         public ViewResult List(string category)
-        {          
+        {    
 
-            ViewBag.SelectedCategory = category;         
+            ViewBag.SelectedCategory = category;
 
-            //if (!memoryCache.TryGetValue("key_currency", out CurrencyConverter modelConvertor))
-            //{
-            //    throw new Exception("Data retrieval error");
-            //}            
+            if (!memoryCache.TryGetValue("key_currency", out CurrencyConverter modelConvertor))
+            {
+                throw new Exception("Data retrieval error");
+            }
+            ViewBag.Convertor = modelConvertor;
             return View(productRepository.GetAllProducts().Where(p => category == null
             || p.Category.Name == category));
         }
@@ -49,7 +49,13 @@ namespace eCommerce.Controllers
         public IActionResult Find(string partOfName)
         {
             if (partOfName == null) return RedirectToAction(nameof(List));
-            
+
+            if (!memoryCache.TryGetValue("key_currency", out CurrencyConverter modelConvertor))
+            {
+                throw new Exception("Data retrieval error");
+            }
+            ViewBag.Convertor = modelConvertor;
+
             List<Product> products = productRepository
                 .GetAllProducts()
                 .Where(r => 
@@ -65,6 +71,12 @@ namespace eCommerce.Controllers
         {
             ViewData["SortByName"] = sortState == SortState.NameAscending ? SortState.NameDescending : SortState.NameAscending;
             ViewData["SortByPrice"] = sortState == SortState.PriceAscending ? SortState.PriceDescending : SortState.PriceAscending;
+
+            if (!memoryCache.TryGetValue("key_currency", out CurrencyConverter modelConvertor))
+            {
+                throw new Exception("Data retrieval error");
+            }
+            ViewBag.Convertor = modelConvertor;
 
             if (sortState == SortState.NameAscending) 
                 return View(nameof(List), productRepository.GetAllProducts().OrderBy(r => r.Name));            
