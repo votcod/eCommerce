@@ -25,36 +25,17 @@ namespace eCommerce.Controllers
 
         }
            
-        public ViewResult List(string category, int page = 1)
-        {
-            int pageSize = 3;
-            
+        public ViewResult List(string category)
+        {          
 
-            ViewBag.SelectedCategory = category;
+            ViewBag.SelectedCategory = category;         
 
-
-            IEnumerable<Product> source = productRepository.GetAllProducts().Where(p => category == null
-            || p.Category.Name == category);            
-           
-                      
-
-            var count = source.Count();
-            var items = source.Skip((page - 1) * pageSize).Take(pageSize).ToList();
-
-            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
-
-            if (!memoryCache.TryGetValue("key_currency", out CurrencyConverter modelConvertor))
-            {
-                throw new Exception("Data retrieval error");
-            }
-
-            ProductListViewModel viewModel = new ProductListViewModel
-            {
-                PageViewModel = pageViewModel,
-                Products = items,
-                CurrencyConverter = modelConvertor
-            };
-            return View(viewModel);
+            //if (!memoryCache.TryGetValue("key_currency", out CurrencyConverter modelConvertor))
+            //{
+            //    throw new Exception("Data retrieval error");
+            //}            
+            return View(productRepository.GetAllProducts().Where(p => category == null
+            || p.Category.Name == category));
         }
         public IActionResult Info(long productId)
         {
@@ -95,6 +76,6 @@ namespace eCommerce.Controllers
                 return View(nameof(List), productRepository.GetAllProducts().OrderByDescending(r => r.Price));
 
             return RedirectToAction(nameof(List));
-        }
+        }       
     }
 }
