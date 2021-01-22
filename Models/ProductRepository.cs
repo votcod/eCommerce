@@ -71,7 +71,7 @@ namespace eCommerce.Models
         }
 
         public Product FindProductById(long id) 
-            => context.Products.FirstOrDefault(r => r.ProductId == id);        
+            => context.Products.Include(r => r.Category).FirstOrDefault(r => r.ProductId == id);        
     
 
         public IEnumerable<Product> GetAllProducts() => context.Products.Include(r => r.Category).ToArray();        
