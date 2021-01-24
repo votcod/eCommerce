@@ -59,7 +59,8 @@
                                     <p class="card-text" style="flex: 1 1 auto;">@p.Description</p>
                                     <p class="card-footer">
                                         Price in UAH: ₴@p.Price <br />
-                                       @await Html.PartialAsync("_ExchangeRatePartialView", new ExchangeRatePartialViewModel { Product = p, CurrencyConverter = (CurrencyConverter)ViewBag.Convertor})
+                                       @await Html.PartialAsync("_ExchangeRatePartialView", 
+                                      new ExchangeRatePartialViewModel { Product = p, CurrencyConverter = (CurrencyConverter)ViewBag.Convertor})
                                     </p>
 
                                     <a asp-action="Info" asp-route-productId="@p.ProductId" class="btn btn-primary">Show details -></a>
