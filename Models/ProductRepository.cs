@@ -18,7 +18,7 @@ namespace eCommerce.Models
             Product prod = new Product
             {
                 Name = product.Name,
-                Price = product.Price,
+                Price = (decimal)product.Price,
                 Description = product.Description,
                 CategoryId = product.CategoryId
             };
@@ -51,7 +51,7 @@ namespace eCommerce.Models
             if (prod != null)
             {
                 prod.Name = product.Name;
-                prod.Price = product.Price;
+                prod.Price = (decimal)product.Price;
                 prod.Description = product.Description;
                 prod.CategoryId = product.CategoryId;               
             }
