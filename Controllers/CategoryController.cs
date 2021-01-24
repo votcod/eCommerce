@@ -19,8 +19,12 @@ namespace eCommerce.Controllers
         [HttpPost]
         public IActionResult Create(Category category)
         {
-            categoryRepository.AddCategory(category);
-            return RedirectToAction(nameof(List));
+            if (ModelState.IsValid)
+            {
+                categoryRepository.AddCategory(category);
+                return RedirectToAction(nameof(List));
+            }
+            return View();
         }
         public IActionResult Delete(long categoryId)
         {
@@ -44,8 +48,12 @@ namespace eCommerce.Controllers
         [HttpPost]
         public IActionResult Edit(Category category)
         {
-            categoryRepository.EditCategory(category);
-            return RedirectToAction(nameof(List));
+            if (ModelState.IsValid)
+            {
+                categoryRepository.EditCategory(category);
+                return RedirectToAction(nameof(List));
+            }
+            return View();
         }
 
     }
