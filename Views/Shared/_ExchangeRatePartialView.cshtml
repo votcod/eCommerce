@@ -1,0 +1,3 @@
+﻿@model ExchangeRatePartialViewModel
+
+    Price in USD: @Decimal.Round(Model.CurrencyConverter.ConvertToUSD(Model.Product.Price), 2).ToString("C")
