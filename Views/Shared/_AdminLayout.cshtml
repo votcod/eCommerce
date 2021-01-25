@@ -35,9 +35,20 @@
     <script>
         $(document).ready(function () {
             $('.alert').delay(3000).fadeOut(500);
-            $('input.input-validation-error').css('border-color', 'red');
+            $('input.input-validation-error').css('border-color', 'red');            
+            $('input').change(function () {
+                if ($(this).val().length > 0) {
+                    $(this).css('border-color', '#28a745');                  
+                    $(`span[data-valmsg-for='${$(this).attr('id')}']`).css('display', 'none');
+                    $(`div[id='${$(this).attr('id')}']`).css('visibility', 'visible');
+                }                
+                else {
+                    $(this).css('border-color', 'red');                    
+                    $(`span[data-valmsg-for='${$(this).attr('id')}']`).css('display', 'block');
+                    $(`div[id='${$(this).attr('id')}']`).css('visibility', 'hidden');
+                }
+             }); 
         });
-
     </script>
 </body>
 </html>
