@@ -37,15 +37,17 @@
             $('.alert').delay(3000).fadeOut(500);
             $('input.input-validation-error').css('border-color', 'red');            
             $('input').change(function () {
+                let label = $(`span[data-valmsg-for='${$(this).attr('id')}']`);
+                let picture = $(`div[id='${$(this).attr('id')}']`);
                 if ($(this).val().length > 0) {
                     $(this).css('border-color', '#28a745');                  
-                    $(`span[data-valmsg-for='${$(this).attr('id')}']`).css('display', 'none');
-                    $(`div[id='${$(this).attr('id')}']`).css('visibility', 'visible');
+                    label.css('display', 'none');
+                    picture.css('visibility', 'visible');
                 }                
                 else {
                     $(this).css('border-color', 'red');                    
-                    $(`span[data-valmsg-for='${$(this).attr('id')}']`).css('display', 'block');
-                    $(`div[id='${$(this).attr('id')}']`).css('visibility', 'hidden');
+                    label.css('display', 'block');
+                    picture.css('visibility', 'hidden');
                 }
              }); 
         });

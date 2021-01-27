@@ -25,11 +25,12 @@ namespace eCommerce
             string connection = Configuration["Data:ConnectionStrings:DefaultConnection"];
             services.AddDbContext<DataContext>(r => r.UseSqlServer(connection));
             services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<IProductRepository, ProductRepository>();
+            services.AddTransient<IProductRepository, ProductRepository>();            
             services.AddLogging();
-            services.AddHostedService<CurrencyService>();
-            services.AddMemoryCache();
+            services.AddHostedService<CurrencyService>();           
             services.AddMvc();
+            services.AddMemoryCache();
+            services.AddSession();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,7 +44,7 @@ namespace eCommerce
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseSession();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(

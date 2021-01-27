@@ -33,7 +33,7 @@ namespace eCommerce.Controllers
             {
                 throw new Exception("Data retrieval error");
             }
-            ViewBag.Convertor = modelConvertor;
+            ViewBag.Convertor = modelConvertor;            
             return View(productRepository.GetAllProducts().Where(p => category == null
             || p.Category.Name == category));
         }
