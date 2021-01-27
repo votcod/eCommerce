@@ -31,11 +31,12 @@ namespace eCommerce.Controllers
 
             if (product != null)
             {
+                TempData["Message"] = $"Product {product.Name} has been successfully added to the shopping cart";
                 Cart cart = GetCart();
                 cart.AddItem(product, 1);
                 SaveCart(cart);
             }
-            return RedirectToAction(nameof(List));
+            return RedirectToAction("List", "Product");
         }
 
         public IActionResult RemoveFromCart(int productId, string returnUrl)
