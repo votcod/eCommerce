@@ -62,8 +62,10 @@
                                        @await Html.PartialAsync("_ExchangeRatePartialView", 
                                       new ExchangeRatePartialViewModel { Product = p, CurrencyConverter = (CurrencyConverter)ViewBag.Convertor})
                                     </p>
-
-                                    <a asp-action="Info" asp-route-productId="@p.ProductId" class="btn btn-primary">Show details -></a>
+                                    <div class="d-flex justify-content-between">
+                                        <div><a asp-action="Info" asp-route-productId="@p.ProductId" class="btn btn-primary">Show details -></a></div>
+                                        <div><a asp-action="AddToCart" asp-controller="Cart" asp-route-productId="@p.ProductId" class="btn btn-success">Add to Cart</a></div>
+                                    </div>                                    
                                 </div>
                             </div>
                         </div>

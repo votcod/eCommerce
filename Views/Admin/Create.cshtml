@@ -20,14 +20,15 @@
             </div>
         </div>
         <div class="form-group">
+            <label asp-for="Category" class="form-check-label"></label>
             <select class="form-control" asp-for="CategoryId">
                 @foreach (var c in ViewBag.Categories)
                 {
                     <option selected=@(Model?.Category?.CategoryId == c.CategoryId)
                             value="@c.CategoryId">
                         @c.Name
-                        </option>
-                    }
+                    </option>
+                }
 
             </select>
         </div>
