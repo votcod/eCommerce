@@ -12,9 +12,10 @@ namespace eCommerce.Controllers
 {
     public class CartController : Controller
     {
-        private IProductRepository repository;
+        private IDataRepository<Product, ProductEditViewModel> repository;
 
-        public CartController(IProductRepository repo) => repository = repo;
+        public CartController(IDataRepository<Product, ProductEditViewModel> repo) 
+            => repository = repo;
         
         public ViewResult List(string returnUrl)
         {
@@ -26,12 +27,13 @@ namespace eCommerce.Controllers
 
         public RedirectToActionResult AddToCart(int productId, string returnUrl)
         {
-            Product product = repository.GetAllProducts()
+            Product product = repository.GetAllItems()
                 .FirstOrDefault(p => p.ProductId == productId);
 
             if (product != null)
             {
-                TempData["Message"] = $"Product {product.Name} has been successfully added to the shopping cart";
+                TempData["Message"] = $"Product {product.Name} has been successfully " +
+                    $"added to the shopping cart";
                 Cart cart = GetCart();
                 cart.AddItem(product, 1);
                 SaveCart(cart);
@@ -41,7 +43,7 @@ namespace eCommerce.Controllers
 
         public IActionResult RemoveFromCart(int productId, string returnUrl)
         {
-            Product product = repository.GetAllProducts()
+            Product product = repository.GetAllItems()
                 .FirstOrDefault(p => p.ProductId == productId);
 
             if (product != null)

@@ -11,16 +11,16 @@ namespace eCommerce.Controllers
 {
     public class ProductController : Controller
     {
-        private readonly IProductRepository productRepository;
-        private readonly ICategoryRepository categoryRepository;
+        private readonly IDataRepository<Product, ProductEditViewModel> productRepository;
+        private readonly IDataRepository<Category, Category> categoryRepository;
         private readonly IMemoryCache memoryCache;
         public ProductController(
-            IProductRepository ProductRepository, 
-            ICategoryRepository CategoryRepository, 
+            IDataRepository<Product, ProductEditViewModel> productRepository,
+            IDataRepository<Category, Category> categoryRepository, 
             IMemoryCache memoryCache)
         {
-            productRepository = ProductRepository;
-            categoryRepository = CategoryRepository;
+            this.productRepository = productRepository;
+            this.categoryRepository = categoryRepository;
             this.memoryCache = memoryCache;
         }
            
@@ -34,12 +34,12 @@ namespace eCommerce.Controllers
                 throw new Exception("Data retrieval error");
             }
             ViewBag.Convertor = modelConvertor;            
-            return View(productRepository.GetAllProducts().Where(p => category == null
+            return View(productRepository.GetAllItems().Where(p => category == null
             || p.Category.Name == category));
         }
         public IActionResult Info(long productId)
         {
-            Product product = productRepository.FindProductById(productId);
+            Product product = productRepository.FindItemById(productId);
             if (product != null)
             {
                 return View(product);
@@ -57,7 +57,7 @@ namespace eCommerce.Controllers
             ViewBag.Convertor = modelConvertor;
 
             List<Product> products = productRepository
-                .GetAllProducts()
+                .GetAllItems()
                 .Where(r => 
                 r.Name.Contains(partOfName) || 
                 r.Name.ToLower().Contains(partOfName) || 
@@ -79,13 +79,13 @@ namespace eCommerce.Controllers
             ViewBag.Convertor = modelConvertor;
 
             if (sortState == SortState.NameAscending) 
-                return View(nameof(List), productRepository.GetAllProducts().OrderBy(r => r.Name));            
+                return View(nameof(List), productRepository.GetAllItems().OrderBy(r => r.Name));            
             else if (sortState == SortState.NameDescending) 
-                return View(nameof(List), productRepository.GetAllProducts().OrderByDescending(r => r.Name));
+                return View(nameof(List), productRepository.GetAllItems().OrderByDescending(r => r.Name));
             else if (sortState == SortState.PriceAscending) 
-                return View(nameof(List), productRepository.GetAllProducts().OrderBy(r => r.Price));
+                return View(nameof(List), productRepository.GetAllItems().OrderBy(r => r.Price));
             else if (sortState == SortState.PriceDescending) 
-                return View(nameof(List), productRepository.GetAllProducts().OrderByDescending(r => r.Price));
+                return View(nameof(List), productRepository.GetAllItems().OrderByDescending(r => r.Price));
 
             return RedirectToAction(nameof(List));
         }       

@@ -1,4 +1,5 @@
 using eCommerce.Models;
+using eCommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -24,8 +25,8 @@ namespace eCommerce
         {
             string connection = Configuration["Data:ConnectionStrings:DefaultConnection"];
             services.AddDbContext<DataContext>(r => r.UseSqlServer(connection));
-            services.AddTransient<ICategoryRepository, CategoryRepository>();
-            services.AddTransient<IProductRepository, ProductRepository>();            
+            services.AddTransient<IDataRepository<Category, Category>, CategoryRepository>();
+            services.AddTransient<IDataRepository<Product, ProductEditViewModel>, ProductRepository>();            
             services.AddLogging();
             services.AddHostedService<CurrencyService>();           
             services.AddMvc();
@@ -42,7 +43,6 @@ namespace eCommerce
             }
             app.UseStatusCodePages();
             app.UseStaticFiles();
-
             app.UseRouting();
             app.UseSession();
             app.UseEndpoints(endpoints =>

@@ -9,11 +9,11 @@ namespace eCommerce.Controllers
 {
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository categoryRepository;
-        public CategoryController(ICategoryRepository category) 
+        private readonly IDataRepository<Category, Category> categoryRepository;
+        public CategoryController(IDataRepository<Category, Category> category) 
             => categoryRepository = category;
 
-        public ViewResult List() => View(categoryRepository.GetCategories());
+        public ViewResult List() => View(categoryRepository.GetAllItems());
 
         public ViewResult Create() => View();
         [HttpPost]
@@ -21,24 +21,23 @@ namespace eCommerce.Controllers
         {
             if (ModelState.IsValid)
             {
-                categoryRepository.AddCategory(category);
+                categoryRepository.CreateItem(category);
                 return RedirectToAction(nameof(List));
             }
             return View();
         }
         public IActionResult Delete(long categoryId)
         {
-            Category category = categoryRepository.FindCategoryById(categoryId);
+           Category category = categoryRepository.DeleteItem(categoryId);
             if (category != null)
             {
-                categoryRepository.DeleteCategory(category);
                 return RedirectToAction(nameof(List));
             }            
             return RedirectToAction(nameof(List));
         }
         public IActionResult Edit(long categoryId)
         {
-            Category category = categoryRepository.FindCategoryById(categoryId);
+            Category category = categoryRepository.FindItemById(categoryId);
             if (category != null)
             {
                 return View("Create", category);
@@ -50,7 +49,7 @@ namespace eCommerce.Controllers
         {
             if (ModelState.IsValid)
             {
-                categoryRepository.EditCategory(category);
+                categoryRepository.EditItem(category);
                 return RedirectToAction(nameof(List));
             }
             return View();

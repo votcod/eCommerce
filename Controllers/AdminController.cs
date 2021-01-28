@@ -10,29 +10,30 @@ namespace eCommerce.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly IProductRepository productRepository;
-        private readonly ICategoryRepository categoryRepository;
-        public AdminController(IProductRepository ProductRepository, ICategoryRepository CategoryRepository)
+        private readonly IDataRepository<Product, ProductEditViewModel> productRepository;
+        private readonly IDataRepository<Category, Category> categoryRepository;
+        public AdminController(
+            IDataRepository<Product, ProductEditViewModel> ProductRepository, 
+            IDataRepository<Category, Category> CategoryRepository)
         {
             categoryRepository = CategoryRepository;
             productRepository = ProductRepository;
-        }
-            
+        }           
 
-        public ViewResult List() => View(productRepository.GetAllProducts());
+        public ViewResult List() => View(productRepository.GetAllItems());
 
         public ViewResult Create()
         {
-            ViewBag.Categories = categoryRepository.GetCategories();
+            ViewBag.Categories = categoryRepository.GetAllItems();
             return View();
         }
         [HttpPost]
         public IActionResult Create(ProductEditViewModel product)
         {
-            ViewBag.Categories = categoryRepository.GetCategories();
+            ViewBag.Categories = categoryRepository.GetAllItems();
             if (ModelState.IsValid)
             {
-                Product prod = productRepository.CreateProduct(product);
+                Product prod = productRepository.CreateItem(product);
                 TempData["Message"] = $"Product {prod.Name} has been successfully added";
                 return RedirectToAction(nameof(List));
             }
@@ -40,7 +41,7 @@ namespace eCommerce.Controllers
         }
         public IActionResult Delete(long productId)
         {
-            Product prod = productRepository.DeleteProduct(productId);
+            Product prod = productRepository.DeleteItem(productId);
             if (prod != null)
             {
                 TempData["Message"] = $"Product {prod.Name} has been successfully deleted";
@@ -49,8 +50,8 @@ namespace eCommerce.Controllers
         }
         public IActionResult Edit(long productId)
         {
-            ViewBag.Categories = categoryRepository.GetCategories();
-            Product product = productRepository.FindProductById(productId);
+            ViewBag.Categories = categoryRepository.GetAllItems();
+            Product product = productRepository.FindItemById(productId);
 
             if (product != null)
             {
@@ -63,7 +64,7 @@ namespace eCommerce.Controllers
         {
             if (ModelState.IsValid)
             {
-                Product prod = productRepository.EditProduct(product);
+                Product prod = productRepository.EditItem(product);
                 if (prod != null)
                 {
                     TempData["Message"] = $"Product {prod.Name} has been successfully changed";
