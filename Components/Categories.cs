@@ -9,9 +9,9 @@ namespace eCommerce.Components
 {
     public class Categories : ViewComponent
     {
-        private readonly ICategoryRepository categoryRepository;
+        private readonly IDataRepository<Category, Category> categoryRepository;
 
-        public Categories(ICategoryRepository categoryRepository)
+        public Categories(IDataRepository<Category, Category> categoryRepository)
         {
             this.categoryRepository = categoryRepository;
         }
@@ -19,7 +19,7 @@ namespace eCommerce.Components
         {
            
             var categories = categoryRepository
-                .GetCategories()
+                .GetAllItems()
                 .Select(r => r.Name)
                 .OrderBy(r => r);            
             return View(categories);

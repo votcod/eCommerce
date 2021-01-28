@@ -8,27 +8,27 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Models
 {
-    public class ProductRepository : IProductRepository
+    public class ProductRepository : IDataRepository<Product, ProductEditViewModel>
     {
         private readonly DataContext context;
         public ProductRepository(DataContext dataContext) => context = dataContext;
 
-        public Product CreateProduct(ProductEditViewModel product)
+        public Product CreateItem(ProductEditViewModel item)
         {
             Product prod = new Product
             {
-                Name = product.Name,
-                Price = (decimal)product.Price,
-                Description = product.Description,
-                CategoryId = product.CategoryId
+                Name = item.Name,
+                Price = (decimal)item.Price,
+                Description = item.Description,
+                CategoryId = item.CategoryId
             };
-            if (product.Picture != null)
+            if (item.Picture != null)
             {
                 byte[] imageData = null;
-                
-                using (var binaryReader = new BinaryReader(product.Picture.OpenReadStream()))
+
+                using (var binaryReader = new BinaryReader(item.Picture.OpenReadStream()))
                 {
-                    imageData = binaryReader.ReadBytes((int)product.Picture.Length);
+                    imageData = binaryReader.ReadBytes((int)item.Picture.Length);
                 }
                 prod.Picture = imageData;
             }
@@ -37,43 +37,43 @@ namespace eCommerce.Models
             return prod;
         }
 
-        public Product DeleteProduct(long id)
+        public Product DeleteItem(long id)
         {
-            Product prod = FindProductById(id);
+            Product prod = FindItemById(id);
             context.Products.Remove(prod);
             context.SaveChanges();
             return prod;
-        }
+        }        
 
-        public Product EditProduct(ProductEditViewModel product)
+        public Product EditItem(ProductEditViewModel item)
         {
-            Product prod = FindProductById(product.ProductId);
+            Product prod = FindItemById(item.ProductId);
             if (prod != null)
             {
-                prod.Name = product.Name;
-                prod.Price = (decimal)product.Price;
-                prod.Description = product.Description;
-                prod.CategoryId = product.CategoryId;               
+                prod.Name = item.Name;
+                prod.Price = (decimal)item.Price;
+                prod.Description = item.Description;
+                prod.CategoryId = item.CategoryId;
             }
-            
-            if (product.Picture != null)
+
+            if (item.Picture != null)
             {
                 byte[] imageData = null;
 
-                using (var binaryReader = new BinaryReader(product.Picture.OpenReadStream()))
+                using (var binaryReader = new BinaryReader(item.Picture.OpenReadStream()))
                 {
-                    imageData = binaryReader.ReadBytes((int)product.Picture.Length);
+                    imageData = binaryReader.ReadBytes((int)item.Picture.Length);
                 }
                 prod.Picture = imageData;
             }
             context.SaveChanges();
             return prod;
-        }
+        } 
 
-        public Product FindProductById(long id) 
-            => context.Products.Include(r => r.Category).FirstOrDefault(r => r.ProductId == id);        
-    
+        public Product FindItemById(long id) => context.Products.Include(r => r.Category).FirstOrDefault(r => r.ProductId == id);       
 
-        public IEnumerable<Product> GetAllProducts() => context.Products.Include(r => r.Category).ToArray();        
+        public IEnumerable<Product> GetAllItems() => context.Products.Include(r => r.Category).ToArray();       
+
+            
     }
 }
