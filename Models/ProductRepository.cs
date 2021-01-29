@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Models
 {
-    public class ProductRepository : IDataRepository<Product, ProductEditViewModel>
+    public class ProductRepository : IDataRepository<Product, ProductEditViewModel>, IDataAction
     {
         private readonly DataContext context;
         public ProductRepository(DataContext dataContext) => context = dataContext;
@@ -68,12 +68,41 @@ namespace eCommerce.Models
             }
             context.SaveChanges();
             return prod;
-        } 
+        }
 
-        public Product FindItemById(long id) => context.Products.Include(r => r.Category).FirstOrDefault(r => r.ProductId == id);       
+        public IEnumerable<Product> Find(string partOfName)
+        {
+            if (partOfName == null) return GetAllItems();
 
-        public IEnumerable<Product> GetAllItems() => context.Products.Include(r => r.Category).ToArray();       
+            IEnumerable<Product> products =
+                GetAllItems()
+                .Where(r =>
+                r.Name.Contains(partOfName) ||
+                r.Name.ToLower().Contains(partOfName) ||
+                r.Name.ToUpper().Contains(partOfName));
 
-            
+            if (products != null) return products;
+            else return new List<Product>();
+        }
+
+        public Product FindItemById(long id) => context.Products
+            .Include(r => r.Category).FirstOrDefault(r => r.ProductId == id);       
+
+        public IEnumerable<Product> GetAllItems() => context.Products
+            .Include(r => r.Category).ToArray();
+
+        public IEnumerable<Product> Sort(SortState sortState)
+        {
+            if (sortState == SortState.NameAscending)
+                return GetAllItems().OrderBy(r => r.Name);
+            else if (sortState == SortState.NameDescending)
+                return GetAllItems().OrderByDescending(r => r.Name);
+            else if (sortState == SortState.PriceAscending)
+                return GetAllItems().OrderBy(r => r.Price);
+            else if (sortState == SortState.PriceDescending)
+                return GetAllItems().OrderByDescending(r => r.Price);
+
+            return new List<Product>();
+        }
     }
 }
