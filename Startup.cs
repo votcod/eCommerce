@@ -26,7 +26,8 @@ namespace eCommerce
             string connection = Configuration["Data:ConnectionStrings:DefaultConnection"];
             services.AddDbContext<DataContext>(r => r.UseSqlServer(connection));
             services.AddTransient<IDataRepository<Category, Category>, CategoryRepository>();
-            services.AddTransient<IDataRepository<Product, ProductEditViewModel>, ProductRepository>();            
+            services.AddTransient<IDataRepository<Product, ProductEditViewModel>, ProductRepository>();
+            services.AddTransient<IDataAction, ProductRepository>();
             services.AddLogging();
             services.AddHostedService<CurrencyService>();           
             services.AddMvc();

@@ -14,80 +14,54 @@ namespace eCommerce.Controllers
         private readonly IDataRepository<Product, ProductEditViewModel> productRepository;
         private readonly IDataRepository<Category, Category> categoryRepository;
         private readonly IMemoryCache memoryCache;
+        private readonly IDataAction dataAction;
         public ProductController(
             IDataRepository<Product, ProductEditViewModel> productRepository,
             IDataRepository<Category, Category> categoryRepository, 
-            IMemoryCache memoryCache)
+            IMemoryCache memoryCache,
+            IDataAction dataAction)
         {
             this.productRepository = productRepository;
             this.categoryRepository = categoryRepository;
             this.memoryCache = memoryCache;
+            this.dataAction = dataAction;
         }
            
         public ViewResult List(string category)
-        {    
-
-            ViewBag.SelectedCategory = category;
-
-            if (!memoryCache.TryGetValue("key_currency", out CurrencyConverter modelConvertor))
-            {
-                throw new Exception("Data retrieval error");
-            }
-            ViewBag.Convertor = modelConvertor;            
+        {
+            ViewBag.SelectedCategory = category;         
+            ViewBag.Convertor = SetCurrencyConvertor();
+            
             return View(productRepository.GetAllItems().Where(p => category == null
             || p.Category.Name == category));
         }
         public IActionResult Info(long productId)
         {
             Product product = productRepository.FindItemById(productId);
-            if (product != null)
-            {
-                return View(product);
-            }
+            if (product != null) return View(product);
+            
             return RedirectToAction(nameof(List));
         }
         public IActionResult Find(string partOfName)
-        {
-            if (partOfName == null) return RedirectToAction(nameof(List));
-
-            if (!memoryCache.TryGetValue("key_currency", out CurrencyConverter modelConvertor))
-            {
-                throw new Exception("Data retrieval error");
-            }
-            ViewBag.Convertor = modelConvertor;
-
-            List<Product> products = productRepository
-                .GetAllItems()
-                .Where(r => 
-                r.Name.Contains(partOfName) || 
-                r.Name.ToLower().Contains(partOfName) || 
-                r.Name.ToUpper().Contains(partOfName))
-                .ToList();
-            if (products != null) return View(nameof(List), products);
-
-            return RedirectToAction(nameof(List));
+        {        
+            ViewBag.Convertor = SetCurrencyConvertor();
+            return View(nameof(List), dataAction.Find(partOfName));            
         }
         public IActionResult Sort(SortState sortState = SortState.NameAscending)
         {
             ViewData["SortByName"] = sortState == SortState.NameAscending ? SortState.NameDescending : SortState.NameAscending;
             ViewData["SortByPrice"] = sortState == SortState.PriceAscending ? SortState.PriceDescending : SortState.PriceAscending;
 
+            ViewBag.Convertor = SetCurrencyConvertor();
+            return View(nameof(List), dataAction.Sort(sortState));
+        }
+        private CurrencyConverter SetCurrencyConvertor()
+        {
             if (!memoryCache.TryGetValue("key_currency", out CurrencyConverter modelConvertor))
             {
                 throw new Exception("Data retrieval error");
             }
-            ViewBag.Convertor = modelConvertor;
-
-            if (sortState == SortState.NameAscending) 
-                return View(nameof(List), productRepository.GetAllItems().OrderBy(r => r.Name));            
-            else if (sortState == SortState.NameDescending) 
-                return View(nameof(List), productRepository.GetAllItems().OrderByDescending(r => r.Name));
-            else if (sortState == SortState.PriceAscending) 
-                return View(nameof(List), productRepository.GetAllItems().OrderBy(r => r.Price));
-            else if (sortState == SortState.PriceDescending) 
-                return View(nameof(List), productRepository.GetAllItems().OrderByDescending(r => r.Price));
-
-            return RedirectToAction(nameof(List));
-        }       
+            return modelConvertor;
+        }
     }
 }
