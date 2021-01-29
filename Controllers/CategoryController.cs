@@ -21,6 +21,7 @@ namespace eCommerce.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["Message"] = $"Category {category.Name} has been successfully created";
                 categoryRepository.CreateItem(category);
                 return RedirectToAction(nameof(List));
             }
@@ -31,7 +32,7 @@ namespace eCommerce.Controllers
            Category category = categoryRepository.DeleteItem(categoryId);
             if (category != null)
             {
-                return RedirectToAction(nameof(List));
+                TempData["Message"] = $"Category {category.Name} has been successfully deleted";
             }            
             return RedirectToAction(nameof(List));
         }
@@ -49,6 +50,7 @@ namespace eCommerce.Controllers
         {
             if (ModelState.IsValid)
             {
+                TempData["Message"] = $"Category {category.Name} has been successfully changed";
                 categoryRepository.EditItem(category);
                 return RedirectToAction(nameof(List));
             }

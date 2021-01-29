@@ -17,6 +17,7 @@ namespace eCommerce.Models
         {
             Product prod = new Product
             {
+                ProductId = 0,
                 Name = item.Name,
                 Price = (decimal)item.Price,
                 Description = item.Description,
@@ -33,16 +34,16 @@ namespace eCommerce.Models
                 prod.Picture = imageData;
             }
             context.Products.Add(prod);
-            context.SaveChanges();
+            context.SaveChanges();            
             return prod;
         }
 
         public Product DeleteItem(long id)
         {
-            Product prod = FindItemById(id);
-            context.Products.Remove(prod);
+
+            context.Products.Remove(new Product { ProductId = id });
             context.SaveChanges();
-            return prod;
+            return new Product();
         }        
 
         public Product EditItem(ProductEditViewModel item)
