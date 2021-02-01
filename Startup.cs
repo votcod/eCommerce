@@ -3,6 +3,7 @@ using eCommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -23,14 +24,15 @@ namespace eCommerce
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+
             string connection = Configuration["Data:ConnectionStrings:DefaultConnection"];
             services.AddDbContext<DataContext>(r => r.UseSqlServer(connection));
             services.AddTransient<IDataRepository<Category, Category>, CategoryRepository>();
             services.AddTransient<IDataRepository<Product, ProductEditViewModel>, ProductRepository>();
             services.AddTransient<IDataAction, ProductRepository>();
             services.AddLogging();
-            services.AddHostedService<CurrencyService>();           
-            services.AddMvc();
+            services.AddHostedService<CurrencyService>();
+            services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddMemoryCache();
             services.AddSession();
         }
@@ -46,12 +48,19 @@ namespace eCommerce
             app.UseStaticFiles();
             app.UseRouting();
             app.UseSession();
-            app.UseEndpoints(endpoints =>
+            app.UseMvc(routes =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default", 
-                    pattern: "{controller=Product}/{action=List}/{id?}"
+                routes.MapRoute(
+                    name: null,
+                    template: "{category}",
+                    defaults: new { controller = "Product", action = "List" }
                     );
+                routes.MapRoute(
+                    name: null,
+                    template: "",
+                    defaults: new { controller = "Product", action = "List" }
+                    );
+                routes.MapRoute(name: null, template: "{controller}/{action}/{id?}");
             });
         }
     }
