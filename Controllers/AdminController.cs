@@ -71,7 +71,8 @@ namespace eCommerce.Controllers
                 }
                 return RedirectToAction(nameof(List));
             }
-            return View();
+            ViewBag.Categories = categoryRepository.GetAllItems();
+            return View(nameof(Create), product);
         }
         
 
