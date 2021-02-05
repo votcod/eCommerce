@@ -29,8 +29,12 @@
                 </div>
                 <div class="head-body" style="height: 80px;">
                     <ul class="d-flex align-items-center list-unstyled">
-                        <li><a asp-action="List" asp-controller="Cart" class="btn btn-sm btn-primary"><img style="width: 20px; height: 20px;" src="https://i1.wp.com/www.honest.media/wp-content/uploads/2016/04/Shopping-Cart.png" alt="Shopping cart" /> Your cart</a></li>
-                        <li>@await Component.InvokeAsync(nameof(ExchengeRate))</li>
+                        <li>                            
+                            @await Component.InvokeAsync(nameof(ShoppingCart))                          
+                        </li>
+                        <li>
+                            @await Component.InvokeAsync(nameof(ExchengeRate))
+                        </li>
                         <li>
                             <a asp-controller="Admin" asp-action="List"
                                class="btn btn-sm btn-primary">Admin panel</a>
@@ -42,7 +46,7 @@
     </div>
     <div>
         @RenderBody()
-    </div>
+    </div>    
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
     <script>
         $(document).ready(function () {

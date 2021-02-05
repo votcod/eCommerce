@@ -1,0 +1,7 @@
+﻿@model Cart
+<small class="navbar-text">
+    <b>Your cart:</b>
+    @Model.Lines.Sum(x => x.Quantity) item(s)
+    ₴@Model.ComputeTotalValue()
+</small>
+<a asp-action="List" asp-controller="Cart" class="btn btn-sm btn-primary d-block"><img style="width: 20px; height: 20px;" src="https://i1.wp.com/www.honest.media/wp-content/uploads/2016/04/Shopping-Cart.png" alt="Shopping cart" /> Your cart</a>
