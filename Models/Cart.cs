@@ -18,6 +18,7 @@ namespace eCommerce.Models
             {
                 lineCollection.Add(new CartLine
                 {
+                    ProductId = product.ProductId,
                     Product = product,
                     Quantity = quantity
                 });

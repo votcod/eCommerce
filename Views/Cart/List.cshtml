@@ -1,4 +1,4 @@
-﻿@model CartListViewModel
+﻿@model Cart
 
 <h2>Your cart</h2>
 <table class="table table-bordered table-striped">
@@ -11,7 +11,7 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var line in Model.Cart.Lines)
+        @foreach (var line in Model.Lines)
         {
             <tr>
                 <td class="text-center">@line.Quantity</td>
@@ -30,7 +30,7 @@
         <tr>
             <td colspan="3" class="text-right">Total:</td>
             <td class="text-right">
-                ₴@Model.Cart.ComputeTotalValue()
+                ₴@Model.ComputeTotalValue()
             </td>
         </tr>
     </tfoot>
@@ -38,4 +38,5 @@
 
 <div class="text-center">
     <a class="btn btn-primary" asp-action="List" asp-controller="Product" >Continue shopping</a>
+    <a class="btn btn-success" asp-action="Checkout" asp-controller="Order">Checkout</a>
 </div>
