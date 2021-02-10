@@ -12,6 +12,8 @@ namespace eCommerce.Models
         {
             Database.EnsureCreated();
         }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<CartLine> CartLines { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Category> Categories { get; set; }
     }

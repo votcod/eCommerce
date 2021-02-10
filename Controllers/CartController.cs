@@ -17,15 +17,12 @@ namespace eCommerce.Controllers
         public CartController(IDataRepository<Product, ProductEditViewModel> repo) 
             => repository = repo;
         
-        public ViewResult List(string returnUrl)
+        public ViewResult List()
         {
-            return View(new CartListViewModel {             
-               Cart = GetCart(),
-               ReturnUrl = returnUrl
-            });
+            return View(GetCart());
         }
 
-        public RedirectToActionResult AddToCart(int productId, string returnUrl)
+        public RedirectToActionResult AddToCart(int productId)
         {
             Product product = repository.GetAllItems()
                 .FirstOrDefault(p => p.ProductId == productId);

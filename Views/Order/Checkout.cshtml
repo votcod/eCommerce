@@ -1,0 +1,36 @@
+﻿@model Order
+
+<h2 class="m-3">Your Details</h2>
+
+<form asp-action="@(Model == null ? "Checkout" : "Edit")" method="post" class="m-4">
+    @if (Model != null)
+    {
+        <input type="hidden" asp-for="OrderId" />
+    }
+    <div class="form-group">
+        <label>Your Name:</label>
+        <div><span asp-validation-for="CustomerName" class="text-danger"></span></div>
+        <input asp-for="CustomerName" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Your Address</label>
+        <div><span asp-validation-for="Address" class="text-danger"></span></div>
+        <input asp-for="Address" class="form-control" />
+    </div>
+    <div class="form-group">
+        <label>Your mobile phone number:</label>
+        <div><span asp-validation-for="PhoneNumber" class="text-danger"></span></div>
+        <input placeholder="+38-XXX-XXX-XXXX" asp-for="PhoneNumber" class="form-control" />
+    </div>
+    <div class="text-center m-2">
+        @if (Model != null)
+        {
+            <button type="submit" class="btn btn-primary">Save Order</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-primary">Place Order</button>
+        }
+        <a asp-action="List" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
