@@ -38,7 +38,7 @@ namespace eCommerce.Controllers
             return RedirectToAction("List", "Product");
         }
 
-        public IActionResult RemoveFromCart(int productId, string returnUrl)
+        public IActionResult RemoveFromCart(int productId)
         {
             Product product = repository.GetAllItems()
                 .FirstOrDefault(p => p.ProductId == productId);
