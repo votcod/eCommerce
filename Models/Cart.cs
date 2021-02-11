@@ -29,8 +29,15 @@ namespace eCommerce.Models
             }
         }
 
-        public void RemoveLine(Product product) =>
-            lineCollection.RemoveAll(l => l.Product.ProductId == product.ProductId);
+        public void RemoveLine(Product product)
+        {
+            CartLine cartLine = lineCollection.FirstOrDefault(r => r.ProductId == product.ProductId);
+            if (cartLine.Quantity > 1)            
+                cartLine.Quantity--;            
+            else            
+                lineCollection.RemoveAll(l => l.Product.ProductId == product.ProductId);                      
+        }
+            
 
         public decimal ComputeTotalValue() =>
             lineCollection.Sum(e => e.Product.Price * e.Quantity);
