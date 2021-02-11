@@ -37,6 +37,20 @@
 </table>
 
 <div class="text-center">
-    <a class="btn btn-primary" asp-action="List" asp-controller="Product" >Continue shopping</a>
-    <a class="btn btn-success" asp-action="Checkout" asp-controller="Order">Checkout</a>
+    <a class="btn btn-primary" asp-action="List" asp-controller="Product">Continue shopping</a>
+    @if (Model.Lines.Count() > 0)
+    {
+        <a class="btn btn-success" asp-action="Checkout" asp-controller="Order">Checkout</a>
+    }
+    else
+    {
+        <a class="btn btn-success disabled" asp-action="Checkout" asp-controller="Order">Checkout</a>
+    }
 </div>
+
+<style>
+    a.disabled {
+        pointer-events: none;
+        cursor: default;        
+    }
+</style>
