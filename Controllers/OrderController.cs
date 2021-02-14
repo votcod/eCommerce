@@ -49,11 +49,12 @@ namespace eCommerce.Controllers
         public IActionResult Checkout(Order order)
         {
             if (ModelState.IsValid)
-            {
+            {               
                 order.Lines = GetCart().Lines.Select(r => new CartLine
                 {
                     ProductId = r.ProductId,
                     Quantity = r.Quantity
+                    
                 }).ToArray();
                 orderRepository.CreateItem(order);
                 SaveCart(new Cart());

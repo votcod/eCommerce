@@ -16,6 +16,7 @@ namespace eCommerce.Models
         [Required]
         [RegularExpression(@"^\+38-\d{3}-\d{3}-\d{4}$", ErrorMessage = "The phone number must be in the format: +38-XXX-XXX-XXXX")]
         public string PhoneNumber { get; set; }
+        public DateTime OrderTime { get; set; }
         public bool IsShipped { get; set; }
         public IEnumerable<CartLine> Lines { get; set; }
     }

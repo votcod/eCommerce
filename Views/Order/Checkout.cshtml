@@ -6,7 +6,8 @@
     @if (Model != null)
     {
         <input type="hidden" asp-for="OrderId" />
-    }
+    }  
+    <input type="hidden" asp-for="OrderTime" value="@DateTime.Now"/>
     <div class="form-group">
         <label>Your Name:</label>
         <div><span asp-validation-for="CustomerName" class="text-danger"></span></div>

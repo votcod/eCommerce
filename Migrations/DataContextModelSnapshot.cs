@@ -82,8 +82,10 @@ namespace eCommerce.Migrations
                     b.Property<bool>("IsShipped")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("OrderTime")
+                        .HasColumnType("datetime2");
+
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("OrderId");
