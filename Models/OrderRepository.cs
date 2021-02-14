@@ -6,35 +6,42 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Models
 {
-    public class OrderRepository : IOrderRepository
+    public class OrderRepository : IDataRepository<Order, Order>
     {
         private readonly DataContext _context;
 
-        public OrderRepository(DataContext context) => _context = context;
+        public OrderRepository(DataContext context) => _context = context;       
 
-        public IEnumerable<Order> Orders => 
-            _context.Orders.Include(r => r.Lines).ThenInclude(r => r.Product).ToArray();
-
-        public void DeleteOrder(Order order)
+        public Order CreateItem(Order item)
         {
-            _context.Orders.Remove(order);
+            _context.Orders.Add(item);
             _context.SaveChanges();
+            return item;
         }
 
-        public Order GetOrder(long key) => _context.Orders
-            .Include(o => o.Lines).First(o => o.OrderId == key);
-        
-
-        public void SaveOrder(Order order)
+        public Order DeleteItem(long id)
         {
-            _context.Orders.Add(order);
+            Order order = FindItemById(id);
+            if (order != null)
+            {
+                _context.Orders.Remove(order);
+                _context.SaveChanges();
+            }
+            return order;
+        }        
+
+        public Order EditItem(Order item)
+        {
+            _context.Orders.Update(item);
             _context.SaveChanges();
+            return item;
         }
 
-        public void UpdateOrder(Order order)
-        {
-            _context.Orders.Update(order);
-            _context.SaveChanges();
-        }
+        public Order FindItemById(long id) => _context.Orders
+            .Include(o => o.Lines).First(o => o.OrderId == id);
+       
+
+        public IEnumerable<Order> GetAllItems() => _context.Orders
+            .Include(r => r.Lines).ThenInclude(r => r.Product).ToArray();         
     }
 }
