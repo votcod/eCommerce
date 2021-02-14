@@ -10,37 +10,37 @@ namespace eCommerce.Controllers
 {
     public class OrderController : Controller
     {
-        private readonly IOrderRepository orderRepository;
+        private readonly IDataRepository<Order, Order> orderRepository;
 
-        public OrderController(IOrderRepository orderRepository)
+        public OrderController(IDataRepository<Order, Order> orderRepository)
         {
             this.orderRepository = orderRepository;
         }
-        public ViewResult List() => View(orderRepository.Orders);
+        public ViewResult List() => View(orderRepository.GetAllItems());
        
-        public ViewResult Edit(long orderId) => View(nameof(Checkout), orderRepository.GetOrder(orderId));
+        public ViewResult Edit(long orderId) => View(nameof(Checkout), orderRepository.FindItemById(orderId));
 
         [HttpPost]
         public IActionResult Edit(Order order)
         {
-            orderRepository.UpdateOrder(order);
+            orderRepository.EditItem(order);
             return RedirectToAction(nameof(List));
         }
         public IActionResult MarkShipped(long orderId)
         {
-            Order order = orderRepository.Orders
+            Order order = orderRepository.GetAllItems()
                 .FirstOrDefault(r => r.OrderId == orderId);
             if (order != null)
             {
                 order.IsShipped = true;
-                orderRepository.UpdateOrder(order);
+                orderRepository.EditItem(order);
             }
             return RedirectToAction(nameof(List));
         }
 
         public IActionResult Delete(long orderId)
         {
-            orderRepository.DeleteOrder(orderRepository.GetOrder(orderId));
+            orderRepository.DeleteItem(orderId);
             return RedirectToAction(nameof(List));
         }
         public ViewResult Checkout() => View();
@@ -55,7 +55,7 @@ namespace eCommerce.Controllers
                     ProductId = r.ProductId,
                     Quantity = r.Quantity
                 }).ToArray();
-                orderRepository.SaveOrder(order);
+                orderRepository.CreateItem(order);
                 SaveCart(new Cart());
                 return RedirectToAction(nameof(Completed));
             }

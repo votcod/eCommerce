@@ -30,7 +30,7 @@ namespace eCommerce
             services.AddTransient<IDataRepository<Category, Category>, CategoryRepository>();
             services.AddTransient<IDataRepository<Product, ProductEditViewModel>, ProductRepository>();
             services.AddTransient<IDataAction, ProductRepository>();
-            services.AddTransient<IOrderRepository, OrderRepository>();
+            services.AddTransient<IDataRepository<Order, Order>, OrderRepository>();
             services.AddLogging();
             services.AddHostedService<CurrencyService>();
             services.AddMvc(options => options.EnableEndpointRouting = false);
