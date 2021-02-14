@@ -21,10 +21,18 @@
             <th>Product</th>
             <th>Quantity</th>
             <td>
-                <a asp-action="MarkShipped" class="btn btn-sm btn-outline-info" asp-route-orderId="@o.OrderId">Ship</a>
-                <a asp-action="Delete" class="btn btn-sm btn-outline-danger" asp-route-orderId="@o.OrderId">Delete</a>
-                <a asp-action="Edit" class="btn btn-sm btn-outline-warning" asp-route-orderId="@o.OrderId">Edit</a>
-                
+
+                @if (o.IsShipped)
+                {
+                    <span style="color: forestgreen">Is shipped</span>
+                    <a asp-action="Delete" class="btn btn-sm btn-outline-danger" asp-route-orderId="@o.OrderId">Delete</a>
+                }
+                else
+                {
+                    <a asp-action="MarkShipped" class="btn btn-sm btn-outline-info" asp-route-orderId="@o.OrderId">Ship</a>
+                    <a asp-action="Delete" class="btn btn-sm btn-outline-danger" asp-route-orderId="@o.OrderId">Delete</a>
+                    <a asp-action="Edit" class="btn btn-sm btn-outline-warning" asp-route-orderId="@o.OrderId">Edit</a>
+                }               
             </td>
         </tr>
         @foreach (CartLine line in o.Lines)
