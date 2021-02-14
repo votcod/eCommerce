@@ -26,7 +26,18 @@ namespace eCommerce.Controllers
             orderRepository.UpdateOrder(order);
             return RedirectToAction(nameof(List));
         }
-       
+        public IActionResult MarkShipped(long orderId)
+        {
+            Order order = orderRepository.Orders
+                .FirstOrDefault(r => r.OrderId == orderId);
+            if (order != null)
+            {
+                order.IsShipped = true;
+                orderRepository.UpdateOrder(order);
+            }
+            return RedirectToAction(nameof(List));
+        }
+
         public IActionResult Delete(long orderId)
         {
             orderRepository.DeleteOrder(orderRepository.GetOrder(orderId));
