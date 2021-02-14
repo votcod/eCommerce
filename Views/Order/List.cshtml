@@ -6,6 +6,7 @@
 
 <table class="table table-bordered">
     <tr>
+        <th>Order time</th>
         <th>Name</th>
         <th>Address</th>
         <th>Phone number</th>
@@ -15,6 +16,7 @@
     @foreach (var o in Model)
     {
         <tr style="background-color: #dee2e6;">
+            <td>@o.OrderTime</td>  
             <td>@o.CustomerName</td>
             <td>@o.Address</td>
             <td>@o.PhoneNumber</td>  
@@ -38,7 +40,7 @@
         @foreach (CartLine line in o.Lines)
         {
             <tr>
-                <td colspan="3"></td>
+                <td colspan="4"></td>
                 <td>@line.Product.Name</td>
                 <td>@line.Quantity</td>
                 <td></td>
