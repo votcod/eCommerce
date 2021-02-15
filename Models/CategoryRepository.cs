@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,30 +12,29 @@ namespace eCommerce.Models
         public CategoryRepository(DataContext dataContext)
             => context = dataContext;
 
-
-        public Category CreateItem(Category item)
+        public async Task<Category> CreateItemAsync(Category item)
         {
             item.CategoryId = 0;
             context.Categories.Add(item);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return item;
         }
 
-        public Category DeleteItem(long id)
+        public async Task<Category> DeleteItemAsync(long id)
         {
             context.Categories.Remove(new Category { CategoryId = id });
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return new Category();
         }
 
-        public Category EditItem(Category item)
+        public async Task<Category> EditItemAsync(Category item)
         {
             context.Categories.Update(item);
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return item;
         }
 
-        public Category FindItemById(long id) => context.Categories.FirstOrDefault(r => r.CategoryId == id);
-        public IEnumerable<Category> GetAllItems() => context.Categories.ToArray();
+        public async Task<Category> FindItemByIdAsync(long id) => await context.Categories.FirstOrDefaultAsync(r => r.CategoryId == id);
+        public async Task<IEnumerable<Category>> GetAllItemsAsync() => await context.Categories.ToListAsync();
     }
 }

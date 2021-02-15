@@ -20,38 +20,38 @@ namespace eCommerce.Controllers
             productRepository = ProductRepository;
         }           
 
-        public ViewResult List() => View(productRepository.GetAllItems());
+        public async Task<ViewResult> List() => View(await productRepository.GetAllItemsAsync());
 
-        public ViewResult Create()
+        public async Task<ViewResult> Create()
         {
-            ViewBag.Categories = categoryRepository.GetAllItems();
+            ViewBag.Categories = await categoryRepository.GetAllItemsAsync();
             return View();
         }
         [HttpPost]
-        public IActionResult Create(ProductEditViewModel product)
+        public async Task<IActionResult> Create(ProductEditViewModel product)
         {
-            ViewBag.Categories = categoryRepository.GetAllItems();
+            ViewBag.Categories = await categoryRepository.GetAllItemsAsync();
             if (ModelState.IsValid)
             {
-                Product prod = productRepository.CreateItem(product);
+                Product prod = await productRepository.CreateItemAsync(product);
                 TempData["Message"] = $"Product {prod.Name} has been successfully added";
                 return RedirectToAction(nameof(List));
             }
            return View();
         }
-        public IActionResult Delete(long productId)
+        public async Task<IActionResult> Delete(long productId)
         {
-            Product prod = productRepository.DeleteItem(productId);
+            Product prod = await productRepository.DeleteItemAsync(productId);
             if (prod != null)
             {
                 TempData["Message"] = $"Product {prod.Name} has been successfully deleted";
             }
             return RedirectToAction(nameof(List));
         }
-        public IActionResult Edit(long productId)
+        public async Task<IActionResult> Edit(long productId)
         {
-            ViewBag.Categories = categoryRepository.GetAllItems();
-            Product product = productRepository.FindItemById(productId);
+            ViewBag.Categories = await categoryRepository.GetAllItemsAsync();
+            Product product = await productRepository.FindItemByIdAsync(productId);
 
             if (product != null)
             {
@@ -60,22 +60,19 @@ namespace eCommerce.Controllers
             return RedirectToAction(nameof(List));
         }
         [HttpPost]
-        public IActionResult Edit(ProductEditViewModel product)
+        public async Task<IActionResult> Edit(ProductEditViewModel product)
         {
             if (ModelState.IsValid)
             {
-                Product prod = productRepository.EditItem(product);
+                Product prod = await productRepository.EditItemAsync(product);
                 if (prod != null)
                 {
                     TempData["Message"] = $"Product {prod.Name} has been successfully changed";
                 }
                 return RedirectToAction(nameof(List));
             }
-            ViewBag.Categories = categoryRepository.GetAllItems();
+            ViewBag.Categories = await categoryRepository.GetAllItemsAsync();
             return View(nameof(Create), product);
         }
-        
-
-
     }
 }

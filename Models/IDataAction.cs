@@ -7,8 +7,8 @@ namespace eCommerce.Models
 {
     public interface IDataAction
     {
-        IEnumerable<Product> Find(string partOfName);
-        IEnumerable<Product> Sort(SortState sortState);
+        Task<IEnumerable<Product>> FindAsync(string partOfName);
+        Task<IEnumerable<Product>> SortAsync(SortState sortState);
 
     }
 }

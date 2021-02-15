@@ -12,36 +12,36 @@ namespace eCommerce.Models
 
         public OrderRepository(DataContext context) => _context = context;       
 
-        public Order CreateItem(Order item)
+        public async Task<Order> CreateItemAsync(Order item)
         {
             _context.Orders.Add(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return item;
         }
 
-        public Order DeleteItem(long id)
+        public async Task<Order> DeleteItemAsync(long id)
         {
-            Order order = FindItemById(id);
+            Order order = await FindItemByIdAsync(id);
             if (order != null)
             {
                 _context.Orders.Remove(order);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
             }
             return order;
         }        
 
-        public Order EditItem(Order item)
+        public async Task<Order> EditItemAsync(Order item)
         {
             _context.Orders.Update(item);
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
             return item;
         }
 
-        public Order FindItemById(long id) => _context.Orders
-            .Include(o => o.Lines).First(o => o.OrderId == id);
+        public async Task<Order> FindItemByIdAsync(long id) => await _context.Orders
+            .Include(o => o.Lines).FirstAsync(o => o.OrderId == id);
        
 
-        public IEnumerable<Order> GetAllItems() => _context.Orders
-            .Include(r => r.Lines).ThenInclude(r => r.Product).ToArray();         
+        public async Task<IEnumerable<Order>> GetAllItemsAsync() =>  await _context.Orders
+            .Include(r => r.Lines).ThenInclude(r => r.Product).ToArrayAsync();         
     }
 }

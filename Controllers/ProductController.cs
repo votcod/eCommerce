@@ -27,33 +27,36 @@ namespace eCommerce.Controllers
             this.dataAction = dataAction;
         }
            
-        public ViewResult List(string category)
+        public async Task<ViewResult> List(string category)
         {
             ViewBag.SelectedCategory = category;         
             ViewBag.Convertor = SetCurrencyConvertor();
-            
-            return View(productRepository.GetAllItems().Where(p => category == null
+
+            var products = await productRepository.GetAllItemsAsync();
+
+            return View(products.Where(p => category == null
             || p.Category.Name == category));
         }
-        public IActionResult Info(long productId)
+        public async Task<IActionResult> Info(long productId)
         {
-            Product product = productRepository.FindItemById(productId);
+            Product product = await productRepository.FindItemByIdAsync(productId);
             if (product != null) return View(product);
             
             return RedirectToAction(nameof(List));
         }
-        public IActionResult Find(string partOfName)
+        public async Task<IActionResult> Find(string partOfName)
         {        
             ViewBag.Convertor = SetCurrencyConvertor();
-            return View(nameof(List), dataAction.Find(partOfName));            
+            return View(nameof(List), await dataAction.FindAsync(partOfName));            
         }
-        public IActionResult Sort(SortState sortState = SortState.NameAscending)
+        public async Task<IActionResult> Sort(SortState sortState = SortState.NameAscending)
         {
             ViewData["SortByName"] = sortState == SortState.NameAscending ? SortState.NameDescending : SortState.NameAscending;
             ViewData["SortByPrice"] = sortState == SortState.PriceAscending ? SortState.PriceDescending : SortState.PriceAscending;
 
             ViewBag.Convertor = SetCurrencyConvertor();
-            return View(nameof(List), dataAction.Sort(sortState));
+
+            return View(nameof(List), await dataAction.SortAsync(sortState));
         }
         private CurrencyConverter SetCurrencyConvertor()
         {
