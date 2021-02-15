@@ -17,12 +17,8 @@ namespace eCommerce.Components
         }
         public IViewComponentResult Invoke()
         {
-           
-            var categories = categoryRepository
-                .GetAllItems()
-                .Select(r => r.Name)
-                .OrderBy(r => r);            
-            return View(categories);
+            var categories = categoryRepository.GetAllItemsAsync();                         
+            return View(categories.Result.Select(r => r.Name).OrderBy(r => r));
         }
     }
 }

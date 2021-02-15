@@ -9,7 +9,7 @@ namespace eCommerce.Models
     {
         public static void Initialize(DataContext context)
         {
-            if (context.Products.Any())
+            if (context.Products.Count() > 0)
             {
                 return;
             }
@@ -19,21 +19,21 @@ namespace eCommerce.Models
                     {
                         Name = "PocketBook 616",
                         Price = 120,
-                    //  Category = "E-Books",
+                        CategoryId = 1,
                         Description = "Comfortable device for reading books"                        
                     },
                     new Product
                     {
                         Name = "PocketBook 633",
                         Price = 250,
-                    //Category = "E-Books",
+                        CategoryId = 1,
                         Description = "Comfortable device for reading books"
                     },
                     new Product
                     {
                         Name = "PocketBook 606",
                         Price = 100,
-                    //    Category = "E-Books",
+                        CategoryId = 1,
                         Description = "Comfortable device for reading books"
                     }
                     );

@@ -13,7 +13,7 @@ namespace eCommerce.Models
         private readonly DataContext context;
         public ProductRepository(DataContext dataContext) => context = dataContext;
 
-        public Product CreateItem(ProductEditViewModel item)
+        public async Task<Product> CreateItemAsync(ProductEditViewModel item)
         {
             Product prod = new Product
             {
@@ -34,21 +34,21 @@ namespace eCommerce.Models
                 prod.Picture = imageData;
             }
             context.Products.Add(prod);
-            context.SaveChanges();            
+            await context.SaveChangesAsync();            
             return prod;
         }
 
-        public Product DeleteItem(long id)
+        public async Task<Product> DeleteItemAsync(long id)
         {
 
             context.Products.Remove(new Product { ProductId = id });
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return new Product();
         }        
 
-        public Product EditItem(ProductEditViewModel item)
+        public async Task<Product> EditItemAsync(ProductEditViewModel item)
         {
-            Product prod = FindItemById(item.ProductId);
+            Product prod = await FindItemByIdAsync(item.ProductId);
             if (prod != null)
             {
                 prod.Name = item.Name;
@@ -67,16 +67,16 @@ namespace eCommerce.Models
                 }
                 prod.Picture = imageData;
             }
-            context.SaveChanges();
+            await context.SaveChangesAsync();
             return prod;
         }
 
-        public IEnumerable<Product> Find(string partOfName)
+        public async Task<IEnumerable<Product>> FindAsync(string partOfName)
         {
-            if (partOfName == null) return GetAllItems();
+            if (partOfName == null) return await GetAllItemsAsync();
 
             IEnumerable<Product> products =
-                GetAllItems()
+                GetAllItemsAsync().Result
                 .Where(r =>
                 r.Name.Contains(partOfName) ||
                 r.Name.ToLower().Contains(partOfName) ||
@@ -86,22 +86,23 @@ namespace eCommerce.Models
             else return new List<Product>();
         }
 
-        public Product FindItemById(long id) => context.Products
-            .Include(r => r.Category).FirstOrDefault(r => r.ProductId == id);       
+        public async Task<Product> FindItemByIdAsync(long id) => await context.Products
+            .Include(r => r.Category).FirstOrDefaultAsync(r => r.ProductId == id);       
 
-        public IEnumerable<Product> GetAllItems() => context.Products
-            .Include(r => r.Category).ToArray();
+        public async Task<IEnumerable<Product>> GetAllItemsAsync() => await context.Products
+            .Include(r => r.Category).ToArrayAsync();
 
-        public IEnumerable<Product> Sort(SortState sortState)
+        public async Task<IEnumerable<Product>> SortAsync(SortState sortState)
         {
+            var products = await GetAllItemsAsync();
             if (sortState == SortState.NameAscending)
-                return GetAllItems().OrderBy(r => r.Name);
+                return products.OrderBy(r => r.Name);
             else if (sortState == SortState.NameDescending)
-                return GetAllItems().OrderByDescending(r => r.Name);
+                return products.OrderByDescending(r => r.Name);
             else if (sortState == SortState.PriceAscending)
-                return GetAllItems().OrderBy(r => r.Price);
+                return products.OrderBy(r => r.Price);
             else if (sortState == SortState.PriceDescending)
-                return GetAllItems().OrderByDescending(r => r.Price);
+                return products.OrderByDescending(r => r.Price);
 
             return new List<Product>();
         }

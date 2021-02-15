@@ -16,37 +16,38 @@ namespace eCommerce.Controllers
         {
             this.orderRepository = orderRepository;
         }
-        public ViewResult List() => View(orderRepository.GetAllItems());
+        public async Task<ViewResult> List() => 
+            View(await orderRepository.GetAllItemsAsync());
        
-        public ViewResult Edit(long orderId) => View(nameof(Checkout), orderRepository.FindItemById(orderId));
+        public async Task<ViewResult> Edit(long orderId) => 
+            View(nameof(Checkout), await orderRepository.FindItemByIdAsync(orderId));
 
         [HttpPost]
-        public IActionResult Edit(Order order)
+        public async Task<IActionResult> Edit(Order order)
         {
-            orderRepository.EditItem(order);
+            await orderRepository.EditItemAsync(order);
             return RedirectToAction(nameof(List));
         }
-        public IActionResult MarkShipped(long orderId)
+        public async Task<IActionResult> MarkShipped(long orderId)
         {
-            Order order = orderRepository.GetAllItems()
-                .FirstOrDefault(r => r.OrderId == orderId);
+            Order order = await orderRepository.FindItemByIdAsync(orderId);
             if (order != null)
             {
                 order.IsShipped = true;
-                orderRepository.EditItem(order);
+                await orderRepository.EditItemAsync(order);
             }
             return RedirectToAction(nameof(List));
         }
 
-        public IActionResult Delete(long orderId)
+        public async Task<IActionResult> Delete(long orderId)
         {
-            orderRepository.DeleteItem(orderId);
+            await orderRepository.DeleteItemAsync(orderId);
             return RedirectToAction(nameof(List));
         }
         public ViewResult Checkout() => View();
         
         [HttpPost]
-        public IActionResult Checkout(Order order)
+        public async Task<IActionResult> Checkout(Order order)
         {
             if (ModelState.IsValid)
             {               
@@ -56,7 +57,7 @@ namespace eCommerce.Controllers
                     Quantity = r.Quantity
                     
                 }).ToArray();
-                orderRepository.CreateItem(order);
+                await orderRepository.CreateItemAsync(order);
                 SaveCart(new Cart());
                 return RedirectToAction(nameof(Completed));
             }

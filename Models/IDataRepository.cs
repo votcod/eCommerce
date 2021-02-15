@@ -9,10 +9,10 @@ namespace eCommerce.Models
     public interface IDataRepository<T, V> where T : class
                                            where V : class
     {
-        IEnumerable<T> GetAllItems();
-        T CreateItem(V item);
-        T FindItemById(long id);
-        T DeleteItem(long id);
-        T EditItem(V item);
+        Task<IEnumerable<T>> GetAllItemsAsync();
+        Task<T> CreateItemAsync(V item);
+        Task<T> FindItemByIdAsync(long id);
+        Task<T> DeleteItemAsync(long id);
+        Task<T> EditItemAsync(V item);
     }
 }

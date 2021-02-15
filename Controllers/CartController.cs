@@ -2,11 +2,9 @@
 using eCommerce.Models;
 using eCommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
+
 
 namespace eCommerce.Controllers
 {
@@ -22,15 +20,13 @@ namespace eCommerce.Controllers
             return View(GetCart());
         }
 
-        public RedirectToActionResult AddToCart(int productId)
+        public async Task<RedirectToActionResult> AddToCart(int productId)
         {
-            Product product = repository.GetAllItems()
-                .FirstOrDefault(p => p.ProductId == productId);
+            var products = await repository.GetAllItemsAsync();
+            Product product = products.FirstOrDefault(p => p.ProductId == productId);
 
             if (product != null)
-            {
-                //TempData["Message"] = $"Product {product.Name} has been successfully " +
-                //    $"added to the shopping cart";
+            {               
                 Cart cart = GetCart();
                 cart.AddItem(product, 1);
                 SaveCart(cart);
@@ -38,9 +34,10 @@ namespace eCommerce.Controllers
             return RedirectToAction("List", "Product");
         }
 
-        public IActionResult RemoveFromCart(int productId)
+        public async Task<IActionResult> RemoveFromCart(int productId)
         {
-            Product product = repository.GetAllItems()
+            var products = await repository.GetAllItemsAsync();
+            Product product = products
                 .FirstOrDefault(p => p.ProductId == productId);
 
             if (product != null)

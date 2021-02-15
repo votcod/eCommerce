@@ -13,32 +13,32 @@ namespace eCommerce.Controllers
         public CategoryController(IDataRepository<Category, Category> category) 
             => categoryRepository = category;
 
-        public ViewResult List() => View(categoryRepository.GetAllItems());
+        public async Task<ViewResult> List() => View(await categoryRepository.GetAllItemsAsync());
 
         public ViewResult Create() => View();
         [HttpPost]
-        public IActionResult Create(Category category)
+        public async Task<IActionResult> Create(Category category)
         {
             if (ModelState.IsValid)
             {
                 TempData["Message"] = $"Category {category.Name} has been successfully created";
-                categoryRepository.CreateItem(category);
+                await categoryRepository.CreateItemAsync(category);
                 return RedirectToAction(nameof(List));
             }
             return View();
         }
-        public IActionResult Delete(long categoryId)
+        public async Task<IActionResult> Delete(long categoryId)
         {
-           Category category = categoryRepository.DeleteItem(categoryId);
+           Category category = await categoryRepository.DeleteItemAsync(categoryId);
             if (category != null)
             {
                 TempData["Message"] = $"Category {category.Name} has been successfully deleted";
             }            
             return RedirectToAction(nameof(List));
         }
-        public IActionResult Edit(long categoryId)
+        public async Task<IActionResult> Edit(long categoryId)
         {
-            Category category = categoryRepository.FindItemById(categoryId);
+            Category category = await categoryRepository.FindItemByIdAsync(categoryId);
             if (category != null)
             {
                 return View("Create", category);
@@ -46,16 +46,15 @@ namespace eCommerce.Controllers
             return RedirectToAction(nameof(List));
         }
         [HttpPost]
-        public IActionResult Edit(Category category)
+        public async Task<IActionResult> Edit(Category category)
         {
             if (ModelState.IsValid)
             {
                 TempData["Message"] = $"Category {category.Name} has been successfully changed";
-                categoryRepository.EditItem(category);
+                await categoryRepository.EditItemAsync(category);
                 return RedirectToAction(nameof(List));
             }
             return View();
         }
-
     }
 }
