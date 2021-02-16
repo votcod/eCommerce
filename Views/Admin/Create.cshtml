@@ -14,10 +14,7 @@
         <div class="form-group position-relative">
             <label asp-for="Name" class="form-check-label"></label>
             <div><span asp-validation-for="Name" class="text-danger "></span></div>
-            <input asp-for="Name" class="form-control" />
-            <div class="position-absolute check-green" id="Name" style="max-height: 20px; max-width: 20px; right: -25px; top: 47%; visibility:hidden">
-            <img style="max-height: 20px; max-width: 20px;" src="https://icon-icons.com/icons2/1380/PNG/32/vcsnormal_93488.png" alt="Ok" />
-            </div>
+            <input asp-for="Name" class="form-control" />           
         </div>
         <div class="form-group">
             <label asp-for="Category" class="form-check-label"></label>
@@ -29,24 +26,17 @@
                         @c.Name
                     </option>
                 }
-
             </select>
         </div>
         <div class="form-group position-relative">
             <label asp-for="Price" class="form-check-label"></label>
             <div><span asp-validation-for="Price" class="text-danger"></span></div>
-            <input asp-for="Price" type="number" class="form-control" />
-            <div class="position-absolute check-green" id="Price" style="max-height: 20px; max-width: 20px; right: -25px; top: 47%; visibility:hidden">
-                <img style="max-height: 20px; max-width: 20px;" src="https://icon-icons.com/icons2/1380/PNG/32/vcsnormal_93488.png" alt="Ok" />
-            </div>
+            <input asp-for="Price" type="number" class="form-control" />           
         </div>
         <div class="form-group position-relative">
             <label asp-for="Description" class="form-check-label"></label>
             <div><span asp-validation-for="Description" class="text-danger"></span></div>
-            <input asp-for="Description" class="form-control" />
-            <div class="position-absolute check-green" id="Description" style="max-height: 20px; max-width: 20px; right: -25px; top: 47%; visibility:hidden">
-                <img style="max-height: 20px; max-width: 20px;" src="https://icon-icons.com/icons2/1380/PNG/32/vcsnormal_93488.png" alt="Ok" />
-            </div>
+            <input asp-for="Description" class="form-control" />            
         </div>
         <div class="form-group">
             <label class="btn btn-outline-info" for="Picture">
