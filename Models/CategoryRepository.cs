@@ -21,7 +21,7 @@ namespace eCommerce.Models
         }
 
         public async Task<Category> DeleteItemAsync(long id)
-        {
+        {            
             context.Categories.Remove(new Category { CategoryId = id });
             await context.SaveChangesAsync();
             return new Category();

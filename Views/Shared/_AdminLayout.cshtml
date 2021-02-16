@@ -28,6 +28,10 @@
         {
             <span style="transform: translate3d(-50%,0,0);" class="alert alert-success text-center m-0 position-absolute">@TempData["Message"]</span>
         }
+        @if (TempData["Alert"] != null)
+        {
+            <span style="transform: translate3d(-50%,0,0);" class="alert alert-warning text-center m-0 position-absolute">@TempData["Alert"]</span>
+        }
         <h2>Admin panel</h2>
     </div>
     <div>

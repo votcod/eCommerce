@@ -1,4 +1,5 @@
 ﻿using eCommerce.Models;
+using eCommerce.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -10,8 +11,13 @@ namespace eCommerce.Controllers
     public class CategoryController : Controller
     {
         private readonly IDataRepository<Category, Category> categoryRepository;
-        public CategoryController(IDataRepository<Category, Category> category) 
-            => categoryRepository = category;
+        private readonly IDataRepository<Product, ProductEditViewModel> productRepository;
+        public CategoryController(IDataRepository<Category, Category> category, IDataRepository<Product, ProductEditViewModel> product)
+        {
+            productRepository = product;
+            categoryRepository = category;
+        }
+       
 
         public async Task<ViewResult> List() => View(await categoryRepository.GetAllItemsAsync());
 
@@ -29,7 +35,13 @@ namespace eCommerce.Controllers
         }
         public async Task<IActionResult> Delete(long categoryId)
         {
-           Category category = await categoryRepository.DeleteItemAsync(categoryId);
+            if (productRepository.GetAllItemsAsync().Result.Any(r => r.CategoryId == categoryId))
+            {
+                TempData["Alert"] = "Some products depend on this category. " +
+                    "You cann`t delete it before this connection is enable";
+                return RedirectToAction(nameof(List));
+            }
+            Category category = await categoryRepository.DeleteItemAsync(categoryId);
             if (category != null)
             {
                 TempData["Message"] = $"Category {category.Name} has been successfully deleted";
